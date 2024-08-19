@@ -15,7 +15,7 @@ def visualize_pixels(image_path, block_size=20):
     im = ax.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     height, width, _ = image.shape
     
-    # Create a rectangle for visualization
+    # Rectangle
     rect = plt.Rectangle((0, 0), block_size, block_size, fill=False, edgecolor='red', linewidth=2)
     ax.add_patch(rect)
 
@@ -33,9 +33,7 @@ def visualize_pixels(image_path, block_size=20):
         
         return rect,
 
-    # Calculate number of frames based on the number of pixel blocks
     total_frames = len(pixel_data)
-    # Set interval to match sound duration (total duration in milliseconds divided by number of frames)
     interval = sound_duration / total_frames if total_frames > 0 else 50
 
     ani = FuncAnimation(fig, update, frames=total_frames, init_func=init, blit=True, interval=interval)
