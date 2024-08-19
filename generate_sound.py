@@ -18,27 +18,27 @@ def gen_sound(pixel_data):
     previous_tone = None
 
     for r, g, b in pixel_data:
-        # Lower the base frequency for a deeper, more calming tone
+        # lower base
         frequency = rgb_to_frequency(r, g, b, base_freq=40, max_freq=120)
-        duration = 300  # Increase duration for a slower, meditative pace
+        duration = 300  # long duration
         
-        # Sine wave for a soothing bass tone
+        # bass
         bass_tone = Sine(frequency).to_audio_segment(duration=duration)
         
-        # Add a harmonic tone using Triangle wave, only if frequency is above a threshold
+        # Threshold
         if frequency > 80:
             harmonic = Triangle(frequency * 1.5).to_audio_segment(duration=duration).apply_gain(-10)
             tone = bass_tone.overlay(harmonic)
         else:
             tone = bass_tone
         
-        # Apply a higher low-pass filter to allow more mid-tones, reducing scratchiness
+        # low pass filter
         tone = tone.low_pass_filter(300)
         
-        # Apply a gentle high-pass filter to remove very low-end rumble
+        # high pass filter to remove low end rumble
         tone = tone.high_pass_filter(40)
         
-        # Smooth out transitions with a longer crossfade
+        # Crossfade
         if previous_tone:
             track = track.append(tone, crossfade=150)
         else:
@@ -46,11 +46,11 @@ def gen_sound(pixel_data):
         
         previous_tone = tone
 
-    # Normalize and apply a slight gain for a richer sound
+    # gain for rich sound
     track = effects.normalize(track)
     track = track.low_pass_filter(300).apply_gain(+1)
     
-    # Apply a soft reverb for an ethereal, meditative feel
+    #maybe add reverb
     track = track.fade_out(duration=500)  # Smooth fade-out at the end
     
     return track
