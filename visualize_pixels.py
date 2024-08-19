@@ -33,10 +33,9 @@ def visualize_pixels(image_path, block_size=20):
         
         return rect,
 
-    # Calculate the number of frames based on the number of pixel blocks
+    # Calculate number of frames based on the number of pixel blocks
     total_frames = len(pixel_data)
-    
-    # Set the interval to match the sound duration (total duration in milliseconds divided by number of frames)
+    # Set interval to match sound duration (total duration in milliseconds divided by number of frames)
     interval = sound_duration / total_frames if total_frames > 0 else 50
 
     ani = FuncAnimation(fig, update, frames=total_frames, init_func=init, blit=True, interval=interval)
